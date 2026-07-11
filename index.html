@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little One 7 — Small apps, built with care</title>
+<meta name="google-site-verification" content="Xs35VJP5x0W0SdY51R83Wibjy8u1e2Ko3sEzYO1DjUc" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0b14;
+    --bg-alt: #10122052;
+    --panel: #12142299;
+    --violet: #8b6bff;
+    --violet-dim: #6b52c9;
+    --amber: #ffb15c;
+    --text: #eae8f4;
+    --muted: #8b8aa8;
+    --line: #ffffff14;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+  #stars{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    z-index:0;
+    pointer-events:none;
+  }
+  .glow{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.35;
+    z-index:0;
+    pointer-events:none;
+  }
+  .glow-1{ width:500px;height:500px; background:var(--violet); top:-150px; left:-150px; }
+  .glow-2{ width:450px;height:450px; background:var(--amber); bottom:-100px; right:-100px; opacity:0.18; }
+
+  header{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    backdrop-filter: blur(10px);
+    background:#0a0b1490;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+  }
+  .logo span{ color:var(--amber); }
+  nav a{
+    color:var(--muted);
+    text-decoration:none;
+    margin-left:32px;
+    font-size:0.92rem;
+    transition:color 0.2s;
+  }
+  nav a:hover{ color:var(--text); }
+
+  main{ position:relative; z-index:1; }
+
+  .hero{
+    min-height:88vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    padding:0 6vw;
+    max-width:900px;
+  }
+  .eyebrow{
+    font-family:'Space Grotesk',sans-serif;
+    color:var(--amber);
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.8rem, 7vw, 5.2rem);
+    line-height:1.03;
+    letter-spacing:-0.02em;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.15s forwards;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(120deg, var(--violet), var(--amber));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p{
+    margin-top:26px;
+    font-size:1.15rem;
+    color:var(--muted);
+    max-width:560px;
+    line-height:1.6;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.3s forwards;
+  }
+  .hero-cta{
+    margin-top:40px;
+    display:flex;
+    gap:16px;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.45s forwards;
+  }
+  .btn{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    padding:14px 26px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:0.95rem;
+    transition:transform 0.2s, box-shadow 0.2s;
+    display:inline-block;
+  }
+  .btn-primary{
+    background:linear-gradient(120deg, var(--violet), #6b52c9);
+    color:#fff;
+    box-shadow:0 0 30px #8b6bff33;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 0 40px #8b6bff55; }
+  .btn-ghost{
+    border:1px solid var(--line);
+    color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--violet); color:var(--violet); }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  section{ padding:110px 6vw; }
+  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head .eyebrow{ animation:none; opacity:1; }
+  .section-head h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .section-head p{
+    margin-top:14px;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.6;
+  }
+
+  .coverflow-wrap{
+    position:relative;
+    padding:20px 0 10px;
+  }
+  .coverflow-floor{
+    position:absolute;
+    bottom:-10px; left:50%;
+    width:70%; height:90px;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, #8b6bff44 0%, transparent 70%);
+    filter:blur(10px);
+    pointer-events:none;
+  }
+  .coverflow{
+    position:relative;
+    height:420px;
+    perspective:1600px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cf-track{ position:relative; width:100%; height:100%; transform-style:preserve-3d; }
+
+  .cf-card{
+    position:absolute;
+    top:50%; left:50%;
+    width:230px; height:340px;
+    margin:-170px 0 0 -115px;
+    border-radius:20px;
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:26px 20px;
+    background:linear-gradient(160deg, #1a1d33dd 0%, #0d0f1cdd 100%);
+    backdrop-filter:blur(6px);
+    border:1.5px solid #ffffff2a;
+    cursor:pointer;
+    transition:transform 0.55s cubic-bezier(.22,.9,.3,1), opacity 0.55s ease, filter 0.55s ease, box-shadow 0.55s ease;
+    will-change:transform;
+  }
+  .cf-card.cf-active{
+    box-shadow:0 0 0 1.5px var(--card-glow, #8b6bff), 0 0 45px 4px var(--card-glow, #8b6bff77), 0 30px 60px -20px #000000aa;
+    animation:cfPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes cfPulse{
+    0%,100%{ box-shadow:0 0 0 1.5px var(--card-glow), 0 0 35px 2px color-mix(in srgb, var(--card-glow) 55%, transparent), 0 30px 60px -20px #000000aa; }
+    50%{ box-shadow:0 0 0 1.5px var(--card-glow), 0 0 55px 8px color-mix(in srgb, var(--card-glow) 75%, transparent), 0 30px 60px -20px #000000aa; }
+  }
+
+  .cf-icon{
+    width:64px; height:64px;
+    border-radius:18px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+    box-shadow:0 8px 24px -6px #00000070;
+  }
+  .cf-icon svg{ width:32px; height:32px; }
+  .icon-1{ background:linear-gradient(135deg,#8b6bff,#5a3fd6); }
+  .icon-2{ background:linear-gradient(135deg,#ffb15c,#e08a2f); }
+  .icon-3{ background:linear-gradient(135deg,#5fd0c0,#2e9d8f); }
+  .icon-4{ background:linear-gradient(135deg,#ff6b9d,#c93e6f); }
+
+  .cf-card h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .cf-card p{
+    color:var(--muted);
+    font-size:0.85rem;
+    line-height:1.5;
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    transition:opacity 0.35s ease 0.15s;
+  }
+  .cf-card.cf-active p{ opacity:1; max-height:120px; }
+
+  .cf-cta{
+    margin-top:16px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.78rem;
+    font-weight:600;
+    font-family:'Space Grotesk',sans-serif;
+    color:var(--amber);
+    opacity:0;
+    transition:opacity 0.35s ease 0.2s;
+  }
+  .cf-card.cf-active .cf-cta{ opacity:1; }
+
+  .cf-tag{
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%) translateY(-6px);
+    background:#12142ee6;
+    border:1px solid #ffffff2a;
+    color:var(--text);
+    font-size:0.72rem;
+    font-weight:600;
+    font-family:'Space Grotesk',sans-serif;
+    padding:7px 14px;
+    border-radius:20px;
+    white-space:nowrap;
+    opacity:0;
+    transition:opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+    pointer-events:none;
+    box-shadow:0 6px 18px -6px #000000aa;
+  }
+  .cf-card.cf-active .cf-tag{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .cf-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    margin-top:8px;
+  }
+  .cf-arrow{
+    width:42px; height:42px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:#12142299;
+    color:var(--text);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:border-color 0.2s, color 0.2s, transform 0.2s;
+    font-size:1.1rem;
+  }
+  .cf-arrow:hover{ border-color:var(--violet); color:var(--violet); transform:scale(1.08); }
+  .cf-dots{ display:flex; gap:9px; }
+  .cf-dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:#ffffff2e;
+    cursor:pointer;
+    transition:background 0.25s, transform 0.25s;
+  }
+  .cf-dot.active{ background:var(--amber); transform:scale(1.3); }
+
+  @media (max-width:640px){
+    .coverflow{ height:380px; }
+    .cf-card{ width:190px; height:300px; margin:-150px 0 0 -95px; padding:20px 16px; }
+  }
+
+  .channel{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+    flex-wrap:wrap;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:48px;
+  }
+  .channel h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.8rem;
+    font-weight:600;
+    max-width:420px;
+  }
+  .channel p{ color:var(--muted); margin-top:12px; max-width:420px; line-height:1.6; }
+
+  footer{
+    padding:50px 6vw;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+  footer .logo{ font-size:1rem; }
+
+  @media (max-width:640px){
+    section{ padding:70px 6vw; }
+    .channel{ flex-direction:column; text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<header>
+  <div class="logo">Little One <span>7</span></div>
+  <nav>
+    <a href="#apps">Apps</a>
+    <a href="#channel">Channel</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">An indie studio of one</div>
+    <h1>Small tools, <br><em>built with care.</em></h1>
+    <p>Little One 7 is a one-person studio making small, focused Android apps — no bloat, no clutter, just things that work. Built in a bedroom, shipped to the world.</p>
+    <div class="hero-cta">
+      <a href="#apps" class="btn btn-primary">See the apps</a>
+      <a href="#channel" class="btn btn-ghost">Watch the channel</a>
+    </div>
+  </section>
+
+  <section id="apps">
+    <div class="section-head">
+      <div class="eyebrow">The lineup</div>
+      <h2>Four apps. One studio.</h2>
+      <p>Each one solves a single problem well. Tap the front card to open it, or the side cards to bring them forward.</p>
+    </div>
+
+    <div class="coverflow-wrap">
+      <div class="coverflow-floor"></div>
+      <div class="coverflow">
+        <div class="cf-track" id="cfTrack">
+
+          <a class="cf-card" data-index="0" href="https://indusapp.store/p2qyw03j" target="_blank" rel="noopener" style="--card-glow:#8b6bff">
+            <span class="cf-tag">✨ AI Generator</span>
+            <div class="cf-icon icon-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l1.6 4.6L18 8l-4.4 1.4L12 14l-1.6-4.6L6 8l4.4-1.4L12 2z"/>
+                <circle cx="18.5" cy="17" r="2.2"/>
+                <circle cx="6" cy="18.5" r="1.4"/>
+              </svg>
+            </div>
+            <h3>PromptVault</h3>
+            <p>A gallery of AI image prompts with built-in FLUX image generation — browse, generate, save.</p>
+            <span class="cf-cta">Open in Indus App Store →</span>
+          </a>
+
+          <a class="cf-card" data-index="1" href="https://indusapp.store/0gdzihhv" target="_blank" rel="noopener" style="--card-glow:#ffb15c">
+            <span class="cf-tag">🎵 Converter</span>
+            <div class="cf-icon icon-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1a1206" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.5" y="6.5" width="12" height="11" rx="2"/>
+                <path d="M14.5 10l6-3v10l-6-3"/>
+                <path d="M5 20v-1M8 20v-2M11 20v-1"/>
+              </svg>
+            </div>
+            <h3>Video to Audio Converter</h3>
+            <p>Strip the audio out of any video in seconds — clean MP3 export, no watermarks.</p>
+            <span class="cf-cta">Open in Indus App Store →</span>
+          </a>
+
+          <a class="cf-card" data-index="2" href="https://indusapp.store/6av2b4mh" target="_blank" rel="noopener" style="--card-glow:#5fd0c0">
+            <span class="cf-tag">🎮 Controller</span>
+            <div class="cf-icon icon-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#052420" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="8" width="20" height="9" rx="4.5"/>
+                <path d="M7 12.5h.01M5.5 11v3M6 12.5h3"/>
+                <circle cx="15.5" cy="11.5" r="1"/>
+                <circle cx="18" cy="14" r="1"/>
+              </svg>
+            </div>
+            <h3>Smart Pad</h3>
+            <p>Turn your phone into a wireless gamepad over WiFi — low latency, no extra hardware.</p>
+            <span class="cf-cta">Open in Indus App Store →</span>
+          </a>
+
+          <a class="cf-card" data-index="3" href="https://indusapp.store/0btzdl3f" target="_blank" rel="noopener" style="--card-glow:#ff6b9d">
+            <span class="cf-tag">👑 Captions</span>
+            <div class="cf-icon icon-4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+                <path d="M4 15h16v1a2 2 0 01-2 2H6a2 2 0 01-2-2v-1z"/>
+                <path d="M12 3l1 2-1 1-1-1 1-2z"/>
+                <path d="M7 4l.6 1.4L9 6l-1.4.6L7 8l-.6-1.4L5 6l1.4-.6L7 4z"/>
+                <path d="M17 4l.6 1.4L19 6l-1.4.6L17 8l-.6-1.4L15 6l1.4-.6L17 4z"/>
+              </svg>
+            </div>
+            <h3>Caption King</h3>
+            <p>Instant Instagram captions, ready to copy and paste — never stare at a blank caption box again.</p>
+            <span class="cf-cta">Open in Indus App Store →</span>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="cf-controls">
+        <div class="cf-arrow" id="cfPrev">‹</div>
+        <div class="cf-dots" id="cfDots"></div>
+        <div class="cf-arrow" id="cfNext">›</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="channel">
+    <div class="channel">
+      <div>
+        <h2>Telugu tech &amp; DIY, on YouTube.</h2>
+        <p>Electronics teardown, DIY science, and hardware hacking — explained in Telugu for makers who like to build things themselves.</p>
+      </div>
+      <a href="#" class="btn btn-primary" target="_blank">Visit the channel</a>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="logo">Little One <span>7</span></div>
+  <div>Built by one person, one app at a time.</div>
+</footer>
+
+<script>
+  // Constellation starfield
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let w, h, stars;
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function initStars(){
+    const count = Math.floor((w*h)/9000);
+    stars = Array.from({length: count}, () => ({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*1.4 + 0.3,
+      vx: (Math.random()-0.5)*0.15,
+      vy: (Math.random()-0.5)*0.15,
+      tw: Math.random()*Math.PI*2
+    }));
+  }
+  initStars();
+  window.addEventListener('resize', initStars);
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = '#eae8f4';
+
+    for(let s of stars){
+      s.x += s.vx; s.y += s.vy; s.tw += 0.02;
+      if(s.x < 0) s.x = w; if(s.x > w) s.x = 0;
+      if(s.y < 0) s.y = h; if(s.y > h) s.y = 0;
+      const alpha = 0.4 + Math.sin(s.tw)*0.35;
+      ctx.globalAlpha = Math.max(alpha, 0.15);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // connect nearby stars faintly
+    for(let i=0;i<stars.length;i++){
+      for(let j=i+1;j<stars.length;j++){
+        const a = stars[i], b = stars[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 110){
+          ctx.strokeStyle = `rgba(139,107,255,${0.12*(1-dist/110)})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Coverflow: fanned holographic app cards
+  const cfTrack = document.getElementById('cfTrack');
+  const cfCards = Array.from(cfTrack.querySelectorAll('.cf-card'));
+  const cfDotsWrap = document.getElementById('cfDots');
+  const cfPrev = document.getElementById('cfPrev');
+  const cfNext = document.getElementById('cfNext');
+  let cfActive = 0;
+
+  cfCards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'cf-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => setActive(i));
+    cfDotsWrap.appendChild(dot);
+  });
+  const cfDots = Array.from(cfDotsWrap.children);
+
+  function renderCoverflow(){
+    cfCards.forEach((card, i) => {
+      const offset = i - cfActive;
+      const abs = Math.abs(offset);
+      const dir = Math.sign(offset);
+
+      const translateX = offset * 190;
+      const rotateY = -dir * Math.min(abs, 1) * 42 - (abs > 1 ? dir * 6 : 0);
+      const scale = 1 - Math.min(abs, 2) * 0.16;
+      const z = -abs * 120;
+      const opacity = abs === 0 ? 1 : abs === 1 ? 0.7 : 0.28;
+      const brightness = abs === 0 ? 1 : abs === 1 ? 0.55 : 0.35;
+
+      card.style.transform =
+        `translateX(${translateX}px) translateZ(${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+      card.style.opacity = opacity;
+      card.style.filter = `brightness(${brightness})`;
+      card.style.zIndex = 50 - abs;
+      card.classList.toggle('cf-active', abs === 0);
+    });
+    cfDots.forEach((d, i) => d.classList.toggle('active', i === cfActive));
+  }
+
+  function setActive(i){
+    cfActive = Math.max(0, Math.min(cfCards.length - 1, i));
+    renderCoverflow();
+  }
+
+  cfCards.forEach((card, i) => {
+    card.addEventListener('click', (e) => {
+      if (i !== cfActive){
+        e.preventDefault();
+        setActive(i);
+      }
+      // if it IS the active card, let the anchor navigate normally
+    });
+  });
+
+  cfPrev.addEventListener('click', () => setActive(cfActive - 1));
+  cfNext.addEventListener('click', () => setActive(cfActive + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') setActive(cfActive - 1);
+    if (e.key === 'ArrowRight') setActive(cfActive + 1);
+  });
+
+  // swipe support
+  let cfTouchStartX = null;
+  cfTrack.addEventListener('touchstart', (e) => {
+    cfTouchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  cfTrack.addEventListener('touchend', (e) => {
+    if (cfTouchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - cfTouchStartX;
+    if (Math.abs(dx) > 40) setActive(cfActive + (dx < 0 ? 1 : -1));
+    cfTouchStartX = null;
+  });
+
+  renderCoverflow();
+</script>
+
+</body>
+</html>
