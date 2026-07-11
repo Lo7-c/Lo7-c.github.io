@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lo7-c.github.io/Lo7-c/sitemap.xml
