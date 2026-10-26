@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="Xs35VJP5x0W0SdY51R83Wibjy8u1e2Ko3sEzYO1DjUc">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Little One 7 — Small apps, built with care</title>
+<meta name="description" content="Little One 7 is a one-person studio making small, focused Android apps.">
+<style>
+:root{--bg:#05060f;--ink:#e9ecff;--dim:#8d93b8;--a:#7c5cff;--b:#22d3ee;--c:#ff5ca8}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,sans-serif;overflow-x:hidden}
+#sky{position:fixed;inset:0;z-index:0;width:100%;height:100%}
+nav,section,footer{position:relative;z-index:1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 6vw;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px);background:rgba(5,6,15,.55)}
+nav b{letter-spacing:.5px}
+nav div a{color:var(--dim);text-decoration:none;margin-left:22px;transition:color .2s}
+nav div a:hover{color:var(--ink)}
+.hero{min-height:92vh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:40px 6vw}
+.hero small{color:var(--b)}
+h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.05;margin:12px 0 18px;letter-spacing:-1px}
+h1 span{display:inline-block;opacity:0;transform:translateY(40px) rotate(4deg);animation:rise .8s cubic-bezier(.2,.8,.2,1) forwards}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--a),var(--b),var(--c),var(--a));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes flow{to{background-position:300% 0}}
+.hero p{color:var(--dim);max-width:46ch;opacity:0;animation:rise 1s .9s forwards}
+.btns{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise 1s 1.1s forwards}
+.btn{padding:12px 24px;border-radius:40px;text-decoration:none;color:var(--ink);border:1px solid #3a3f6b;transition:.25s;position:relative;overflow:hidden}
+.btn.p{background:linear-gradient(120deg,var(--a),var(--b));border:0;color:#04050c;font-weight:600}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px -8px var(--a)}
+.stage{position:relative;width:min(480px,88vw);margin:auto}
+.intro{display:none;width:100%;height:auto;mix-blend-mode:screen;cursor:pointer}
+.stage.has .intro{display:block}
+.stage.has .orbit{display:none}
+/* orbit logo */
+.orbit{position:relative;width:min(380px,80vw);aspect-ratio:1;margin:auto}
+.orbit i{position:absolute;inset:0;border-radius:50%;border:1px dashed #3b4075;animation:spin 24s linear infinite}
+.orbit i:nth-child(2){inset:14%;border-style:solid;border-color:#2a3060;animation-duration:16s;animation-direction:reverse}
+.orbit i:nth-child(3){inset:28%;animation-duration:10s}
+.orbit i::after{content:"";position:absolute;top:-6px;left:50%;width:12px;height:12px;border-radius:50%;background:var(--b);box-shadow:0 0 18px var(--b)}
+.orbit i:nth-child(2)::after{background:var(--c);box-shadow:0 0 18px var(--c)}
+.orbit i:nth-child(3)::after{background:var(--a);box-shadow:0 0 18px var(--a)}
+.orbit .core{position:absolute;inset:0;display:grid;place-items:center;perspective:700px}
+.orbit .core b{display:block;font-size:clamp(3rem,13vw,5.6rem);font-weight:900;letter-spacing:2px;color:#f6f1e7;
+ text-shadow:1px 1px 0 #ffb347,2px 2px 0 #ff9a1f,3px 3px 0 #f27c00,4px 4px 0 #d96a00,5px 5px 0 #b85600,6px 6px 0 #8f4200,7px 7px 0 #6d3200,
+ 0 0 14px rgba(255,160,40,.9),0 0 34px rgba(255,120,20,.7),0 0 70px rgba(124,92,255,.6);
+ -webkit-text-stroke:1px rgba(255,200,120,.65);
+ animation:float3d 6s ease-in-out infinite,glow 2.4s ease-in-out infinite alternate}
+.orbit .core b span{color:#ff9a1f}
+@keyframes float3d{0%,100%{transform:rotateY(-22deg) rotateX(6deg)}50%{transform:rotateY(22deg) rotateX(-4deg) translateY(-6px)}}
+@keyframes glow{to{filter:drop-shadow(0 0 22px rgba(255,140,30,.9)) drop-shadow(0 0 40px rgba(34,211,238,.5))}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* apps */
+.wrap{padding:80px 6vw}
+h2{font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.5px}
+.sub{color:var(--dim);margin:8px 0 36px;max-width:56ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;perspective:1000px}
+.card{position:relative;display:block;padding:26px;border-radius:20px;text-decoration:none;color:inherit;background:linear-gradient(160deg,#10122b,#0a0b1c);border:1px solid #23274f;transform-style:preserve-3d;transition:transform .15s ease-out,border-color .3s;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(124,92,255,.35),transparent 60%);opacity:0;transition:opacity .3s}
+.card:hover{border-color:var(--a)}
+.card:hover::before{opacity:1}
+.card .ic{font-size:2.2rem;display:inline-block;animation:bob 3.5s ease-in-out infinite}
+.card:nth-child(2n) .ic{animation-delay:-1s}
+.card:nth-child(3n) .ic{animation-delay:-2s}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-6deg)}}
+.card small{display:block;color:var(--b);margin-top:10px}
+.card h3{margin:2px 0 8px}
+.card p{color:var(--dim);font-size:.93rem}
+.card .go{display:inline-block;margin-top:16px;color:var(--ink);font-weight:600;transition:transform .25s}
+.card:hover .go{transform:translateX(6px)}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
+.rv.in{opacity:1;transform:none}
+/* marquee */
+.mq{overflow:hidden;border-block:1px solid #1b1f44;padding:14px 0;background:rgba(10,11,30,.6)}
+.mq div{display:flex;gap:48px;width:max-content;animation:slide 28s linear infinite;color:#6d74a8;font-size:1.1rem}
+@keyframes slide{to{transform:translateX(-50%)}}
+/* channel */
+.ch{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.ch>div:first-child{flex:1 1 320px}
+.wave{display:flex;align-items:center;gap:5px;height:90px}
+.wave s{width:6px;border-radius:4px;background:linear-gradient(var(--b),var(--c));animation:eq 1.1s ease-in-out infinite}
+@keyframes eq{0%,100%{height:12px}50%{height:80px}}
+footer{padding:50px 6vw 70px;text-align:center;color:var(--dim)}
+footer b{display:block;color:var(--ink);font-size:1.3rem;margin-bottom:6px}
+@media(max-width:800px){.hero{grid-template-columns:1fr;text-align:left}.stage{order:-1}.orbit{width:240px}nav div a{margin-left:14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}h1 span,.hero p,.btns,.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+
+<nav><b>Little One 7</b><div><a href="#apps">Apps</a><a href="#channel">Channel</a><a href="#contact">Contact</a></div></nav>
+
+<section class="hero">
+  <div>
+    <small>An indie studio of one</small>
+    <h1 id="t"></h1>
+    <p>Little One 7 is a one-person studio making small, focused Android apps — no bloat, no clutter, just things that work. Built in a bedroom, shipped to the world.</p>
+    <div class="btns"><a class="btn p" href="#apps">See the apps</a><a class="btn" href="#channel">Watch the channel</a></div>
+  </div>
+  <div class="stage" id="stage"><video id="iv" class="intro" src="lo7-intro.mp4" muted playsinline autoplay preload="auto"></video><div class="orbit" aria-hidden="true"><i></i><i></i><i></i><div class="core"><b>LO<span>7</span></b></div></div></div>
+</section>
+
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+
+<section class="wrap" id="apps">
+  <h2 class="rv">Five apps. One studio.</h2>
+  <p class="sub rv">Each one solves a single problem well. Download now and experience the difference.</p>
+  <div class="grid">
+    <a class="card rv" href="https://indusapp.store/p2qyw03j"><span class="ic">✨</span><small>AI Generator</small><h3>PromptVault</h3><p>A gallery of AI image prompts with built-in FLUX image generation — browse, generate, save.</p><span class="go">Get App →</span></a>
+    <a class="card rv" href="https://indusapp.store/0gdzihhv"><span class="ic">🎵</span><small>Converter</small><h3>Video to Audio</h3><p>Strip the audio out of any video in seconds — clean MP3 export, no watermarks.</p><span class="go">Get App →</span></a>
+    <a class="card rv" href="https://indusapp.store/6av2b4mh"><span class="ic">🎮</span><small>Controller</small><h3>Smart Pad</h3><p>Turn your phone into a wireless gamepad over WiFi — low latency, no extra hardware.</p><span class="go">Get App →</span></a>
+    <a class="card rv" href="https://indusapp.store/0btzdl3f"><span class="ic">👑</span><small>Captions</small><h3>Caption King</h3><p>Instant Instagram captions, ready to copy and paste — never stare at a blank caption box again.</p><span class="go">Get App →</span></a>
+    <a class="card rv" href="https://indusapp.store/oisjcjez"><span class="ic">🎮</span><small>Game</small><h3>Tic Tac Toe 2P</h3><p>Classic Tic Tac Toe game to play offline with a friend — simple, fast, fun.</p><span class="go">Get App →</span></a>
+  </div>
+</section>
+
+<section class="wrap" id="channel">
+  <div class="ch">
+    <div class="rv">
+      <h2>Telugu tech &amp; DIY, on YouTube.</h2>
+      <p class="sub">Electronics teardown, DIY science, and hardware hacking — explained in Telugu for makers who like to build things themselves.</p>
+      <a class="btn p" href="#">Visit the channel</a>
+    </div>
+    <div class="wave" id="wave" aria-hidden="true"></div>
+  </div>
+</section>
+
+<footer id="contact"><b>Little One 7</b>Built by one person, one app at a time.</footer>
+
+<script>
+// headline, word by word
+var t=document.getElementById('t'),w=['Small','tools,'],o='';
+w.forEach(function(x,i){o+='<span style="animation-delay:'+(.15+i*.18)+'s">'+x+'</span> '});
+o+='<em><span style="animation-delay:.55s">built</span> <span style="animation-delay:.7s">with</span> <span style="animation-delay:.85s">care.</span></em>';
+t.innerHTML=o;
+// marquee
+var m=document.getElementById('mq'),names=['PromptVault','Video to Audio','Smart Pad','Caption King','Tic Tac Toe 2P'],s='';
+for(var k=0;k<4;k++)names.forEach(function(n){s+='<span>✦ '+n+'</span>'});
+m.innerHTML=s;
+// equalizer bars
+var wv=document.getElementById('wave'),h='';
+for(var i=0;i<18;i++)h+='<s style="animation-delay:'+(-i*.13).toFixed(2)+'s"></s>';
+wv.innerHTML=h;
+// intro video: plays once, holds last frame, tap to replay. Falls back to orbit if file is missing
+var iv=document.getElementById('iv'),stg=document.getElementById('stage');
+iv.addEventListener('loadeddata',function(){stg.classList.add('has');var p=iv.play();if(p&&p.catch)p.catch(function(){})});
+iv.addEventListener('click',function(){iv.currentTime=0;iv.play()});
+// scroll reveal
+var io=new IntersectionObserver(function(e){e.forEach(function(x,i){if(x.isIntersecting){setTimeout(function(){x.target.classList.add('in')},i*90);io.unobserve(x.target)}})},{threshold:.15});
+document.querySelectorAll('.rv').forEach(function(e){io.observe(e)});
+// card tilt + glow
+document.querySelectorAll('.card').forEach(function(c){
+  c.addEventListener('pointermove',function(e){
+    var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');
+    c.style.transform='rotateY('+((x-.5)*14)+'deg) rotateX('+((.5-y)*14)+'deg) translateZ(8px)';
+  });
+  c.addEventListener('pointerleave',function(){c.style.transform=''});
+});
+// starfield with parallax + shooting stars
+var cv=document.getElementById('sky'),g=cv.getContext('2d'),W,H,st=[],sh=[],mx=0,my=0;
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;st=[];for(var i=0;i<Math.min(180,W*H/9000);i++)st.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,p:Math.random()*6})}
+addEventListener('resize',size);size();
+addEventListener('pointermove',function(e){mx=e.clientX/W-.5;my=e.clientY/H-.5});
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function draw(t){
+  g.clearRect(0,0,W,H);
+  st.forEach(function(s){
+    s.y+=s.z*.15;if(s.y>H)s.y=0;
+    var a=.4+.6*Math.abs(Math.sin(t/900+s.p));
+    g.fillStyle='rgba(200,210,255,'+a*s.z+')';
+    g.beginPath();g.arc(s.x-mx*30*s.z,s.y-my*30*s.z,s.z*1.6,0,6.3);g.fill();
+  });
+  if(Math.random()<.008)sh.push({x:Math.random()*W,y:Math.random()*H*.4,l:0});
+  sh=sh.filter(function(s){
+    s.x+=9;s.y+=4;s.l++;
+    var gr=g.createLinearGradient(s.x,s.y,s.x-90,s.y-40);
+    gr.addColorStop(0,'rgba(255,255,255,.9)');gr.addColorStop(1,'rgba(255,255,255,0)');
+    g.strokeStyle=gr;g.lineWidth=1.5;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x-90,s.y-40);g.stroke();
+    return s.l<60;
+  });
+  if(!reduce)requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
